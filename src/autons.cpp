@@ -6,9 +6,9 @@
 /////
 
 // These are out of 127
-const int DRIVE_SPEED = 110;
-const int TURN_SPEED = 90;
-const int SWING_SPEED = 110;
+const int DRIVE_SPEED = 127;
+const int TURN_SPEED = 127;
+const int SWING_SPEED = 127;
 
 ///
 // Constants
@@ -376,3 +376,13 @@ void measure_offsets() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+/*void test_1() {
+  chassis.pid_drive_set(10_in, DRIVE_SPEED); //(distance, speed) goes forward
+  chassis.pid_wait(); //waits for action
+  lift.move_absolute(100, 127); //(position, speed) goes up
+  chassis.pid_drive_set(-10_in, DRIVE_SPEED); //goes back to starting position
+  chassis.pid_wait();
+  lift.move_absolute(0, 127); //goes down to starting position 
+
+}*/
