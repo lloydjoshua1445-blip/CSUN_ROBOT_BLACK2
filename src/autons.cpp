@@ -48,6 +48,7 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
 
+
 ///
 // Drive Example
 ///
@@ -386,3 +387,249 @@ void measure_offsets() {
   lift.move_absolute(0, 127); //goes down to starting position 
 
 }*/
+
+// PT&: might delete later 
+// void test_auto() {
+//   chassis.pid_drive_set(10_in, DRIVE_SPEED); //(distance, speed) goes forward
+//   chassis.pid_wait(); //waits for action
+  
+//   lift.move_absolute(100, 127); //(position, speed) goes up
+//   claw.set(true); // PT&: questionable
+//   chassis.pid_drive_set(-10_in, DRIVE_SPEED); //goes back to starting position
+//   chassis.pid_wait();
+//   lift.move_absolute(0, 127); //goes down to starting position 
+//   claw.set(false); // PT&: questionable
+//   chassis.pid_wait();
+
+//   chassis.pid_drive_set(15_in, DRIVE_SPEED); //(distance, speed) goes forward
+//   chassis.pid_wait(); //waits for action
+
+//    lift.move_absolute(100, 127); //(position, speed) goes up
+//   claw.set(true); // PT&: questionable
+//   chassis.pid_drive_set(-10_in, DRIVE_SPEED); //goes back to starting position
+//   chassis.pid_wait();
+//   lift.move_absolute(0, 127); //goes down to starting position 
+//   claw.set(false); // PT&: questionable
+//   chassis.pid_wait();
+//   chassis.pid_drive_set(-15_in, DRIVE_SPEED); //(distance, speed) goes backward
+
+ 
+
+
+
+// }
+
+// === PT&: 11/20 Route --> Turn right grab your stuff, place === //
+ 
+// PT&: function that defines what our lift does in one motion
+void lift_control() {
+  lift.move(90);  // out of 127    
+  pros::delay(500);
+  lift.move(5); // big Jess said don't leave it at purely 0
+}
+
+void test_autonomous() {
+  // initialize everything
+  // chassis.pid_targets_reset();
+  // chassis.drive_sensor_reset();
+  // chassis.odom_xyt_set(0_in, 0_in, 0_deg);
+  // chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+  // PT&&: never mind, it's redundant, the autonomous() on main already does so
+
+  // === NOTES ON AUTON === //
+  /**
+   * Jess is goated
+   * When use controller, don't click Timed Run. Click DOWN + B
+   * So when you press Program ==> Drive, you controller should only vibrate once
+   * if your controller vibrates 3 times, EZ-Template is telling you that your 
+   * PID sensor isn't working, or other issue
+   * but if it vibrates 1 time, you're fine. 
+   * Always, always check your PID/IMU sensor, that it's plugged and glowing
+   */
+
+  // === Route Begins Proper Starting Below === //
+
+  // == START from here == //
+
+
+  // PT&: Route 1: start by just turn and grab from the little pod idk
+  // first of all: the bot starts with the claw "open" upon firing up the code
+
+  // start by driving backwards while trying to 
+  
+  // start up by 5 inches, to clear the side pins first
+  // note: it's just at a constnat 80 speed, just testing a slow start
+  // chassis.pid_drive_set(5_in, DRIVE_SPEED); // PT&&: here's just the most basic drive
+  // chassis.pid_wait(); // wait for action
+
+  // // turn right 90 degrees, if negative (-90) then turn left 90 degrees
+  // chassis.pid_turn_set(90_deg,TURN_SPEED); //0 heading is straight turns right at a certain speed
+  // chassis.pid_wait();
+
+  // //Forward 57.5 inches align it horizontally with the dispenser
+  // chassis.pid_drive_set(57.5_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+  // // turn another 90 degrees, have bot face the pin
+  // chassis.pid_turn_set(90_deg,TURN_SPEED);
+  // chassis.pid_wait();
+  
+  // // drive back towards the pin a tiny bit, to allign claw with the pin
+  // chassis.pid_drive_set(2_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+  // // change the state of the claw, clamp that onto the pin
+  // claw.set(true);
+  // pros::delay(250); // PT&&: for the whole machine to pause for a moment, not just chassis
+
+  // // move backwards a bit, give leeway for the future turn
+  // chassis.pid_drive_set(-2_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+
+  // // now the pin is in the cluthces of the claw, turn the bot around fully, to start placement
+  // chassis.pid_turn_set(180_deg,TURN_SPEED);
+  // chassis.pid_wait();
+
+  // // now lift, just test if the claw holds onto the claw as it goes up.
+  // lift_control();
+  // chassis.pid_wait();
+
+
+  // // == Peter Test 2: Test 2 == //
+  // chassis.pid_drive_set(70_in, DRIVE_SPEED); //(distance, speed) goes forward
+  // chassis.pid_wait(); //waits for action
+
+  // // close the claw to grab the pin
+  // claw.set(true);
+  // //chassis.pid_wait_quick_chain();
+
+  // // lift that john up
+  // auton_cascade();
+
+  // // drive backwards 25 inches to align with the red goal
+  // chassis.pid_drive_set(-40_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+  // // turn left by 90 degrees to align self with the red goal
+  // chassis.pid_turn_set(-90_deg,TURN_SPEED);
+  // chassis.pid_wait();
+
+  // // hold the pin up as you approach the red box
+  // lift.move(90);
+
+  // // move up to the red box
+  // chassis.pid_drive_set(20_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+  // // let the pin in
+  // pros::delay(500); 
+  // lift.move(5);
+
+  // // open the claw
+  // // close the claw to grab the pin
+  // claw.set(false);
+  // //chassis.pid_wait_quick_chain();
+  // pros::delay(500);
+
+
+  // // back up to create some space
+  // chassis.pid_drive_set(-15_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+
+  // Peter Test 3 -- change the toggle to red
+
+
+  // === CSUN Sunrise Competition Auton === //
+  // hold the claw
+  // true sets to the opposite of the starting position
+  // starting position is always "open" so setting claw to true always closes it
+  claw.set(true); // PT&&:
+  pros::delay(1000);
+
+
+  // chassis.pid_drive_set(-1_in, DRIVE_SPEED);
+  // chassis.pid_wait();
+
+  
+  //pros::delay(500);
+  // chassis.pid_wait_until(-1_in);
+ // chassis.pid_wait();
+
+  lift.move(100);
+  // chassis.pid_wait_quick_chain();
+  pros::delay(1500);
+  lift.move(-80);
+
+  // you need your delays
+  pros::delay(2000);
+  lift.move(100);
+  pros::delay(1500);
+  // chassis.pid_wait_quick_chain();
+  lift.move(-80);
+  pros::delay(2000);
+
+  
+  // officially the end of trying the toggle.
+  chassis.pid_wait();
+
+  // Peter Test 4 - move to center of the map
+  chassis.pid_drive_set(19_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  // just adjust the lift to go up
+  lift.move(100);
+  pros::delay(1500);
+
+  // turn self right by 90 degrees to align self with the red goal
+  chassis.pid_turn_set(90_deg,TURN_SPEED);
+  chassis.pid_wait();
+
+  // go up to your team slot 
+  chassis.pid_drive_set(24_in, DRIVE_SPEED);
+  chassis.pid_wait();
+  pros::delay(1000);
+
+
+  // throw that thing down
+  lift.move(-80);
+  pros::delay(1500);
+
+  // let go of your claw
+  claw.set(false);
+  pros::delay(1000);
+
+   // go back a bit
+  chassis.pid_drive_set(-20_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+  //turn back to align self with the center
+  //chassis.pid_turn_set(-90_deg,TURN_SPEED); // might be absolte
+  chassis.pid_turn_set(0_deg,TURN_SPEED);
+  chassis.pid_wait();
+
+// drive 10 inches to approach the red/blue
+chassis.pid_drive_set(18_in, DRIVE_SPEED);
+chassis.pid_wait();
+
+// // close it around the red/blue, never knock that thang over, it has red on clear side
+// claw.set(true);
+// pros::delay(1000);
+
+
+// === end of CSUN Sunrise Competition Auton === //
+
+
+
+
+
+
+
+
+
+  
+
+
+
+}

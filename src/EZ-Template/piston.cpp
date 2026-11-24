@@ -31,6 +31,14 @@ bool Piston::get() { return current; }
 
 // Toggle for user control
 void Piston::button_toggle(int toggle) {
+  // PT&: note that button toggle has been activated
+  // ez::screen_print("Toggle for the claw has been activated");
+  // screen_print("The button toggle for c");
+  //std::printf("Toggle for the claw has been activated")
+  std::printf("claw button_toggle called: toggle=%d, last_press=%d, current=%d\n",
+              toggle, last_press, get());
+  
+
   if (toggle && !last_press) {
     set(!get());
   }

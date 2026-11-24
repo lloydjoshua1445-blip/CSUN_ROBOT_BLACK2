@@ -9,11 +9,11 @@
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {-12, -13, -14},  // Left Chassis Ports (negative port will reverse it!)
-    {1,2,3},  // Right Chassis Ports (negative port will reverse it!)
+    {1, 2, 3},  // Right Chassis Ports (negative port will reverse it!)
 
     9,      // IMU Port
     4.125,   // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    160);  // Wheel RPM = cartridge * (motor gear / wheel gear)
+    260);  // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
@@ -58,7 +58,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-      {"Drive\n\nDrive forward and come back", drive_example},
+      /*{"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
       {"Drive and Turn\n\nSlow down during drive", wait_until_change_speed},
@@ -71,7 +71,9 @@ void initialize() {
       {"Pure Pursuit Wait Until\n\nGo to (24, 24) but start running an intake once the robot passes (12, 24)", odom_pure_pursuit_wait_until_example},
       {"Boomerang\n\nGo to (0, 24, 45) then come back to (0, 0, 0)", odom_boomerang_example},
       {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
-      {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
+      {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},*/
+      {"Peter Test Auton\n\nThis is route we use", test_autonomous}, // PT&&: Route 15:this is our route
+      
   });
 
   // Initialize chassis and auton selector
@@ -134,6 +136,7 @@ void autonomous() {
   */
 
   ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  // PT&&: 
 }
 
 /**
@@ -254,20 +257,55 @@ void opcontrol() {
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
 
     // 11/16/2026 LIFT
-   if (master.get_digital(DIGITAL_R1)) {
-      lift.move(127);
+    // 11_20/2026, change the lift from R1 and L1 to L1 and L2
+    // 
+   if (master.get_digital(DIGITAL_L1)) {
+      lift.move(127); // moves lift up
     }
-      else if (master.get_digital(DIGITAL_L1)) {
-      lift.move(-127);
+      else if (master.get_digital(DIGITAL_L2)) {
+      lift.move(-127); // moves it down
       }
       else {
-        lift.move(0);
+        lift.move(5); // PT&: don't set it all the way down. per big EZ rec
     } 
 
+    // PT&: 11/19 kawaii leonard
+    // use if statement so this thing doesn't toggle back and forth every milisecond
+    // shoutout to Lazzaro
+    // PT&&: check this one again
+    // claw.button_toggle(master.get_digital(DIGITAL_A)); //toggles the claw to close
+    // this one is a proper toggle, press once and claw "clamps" and stays clamped --> I think
+    // PT&: testing if bot can even just open and close without input
+    // claw.set(true);
+    // claw.set(false);
+    // claw.set(true);
+    // claw.set(false);
+    // claw.button_toggle(master.get_digital(DIGITAL_A));
+    // PT&: Kawaii Leonard 11_20
+    // claw.button_toggle(master.get_digital(DIGITAL_B));
+    // pretty sure it's supposed to be
+    // toggle.button_toggle(master.get_digital(DIGITAL_B)); 
+    // since this corresponds to our subystem
+    //PT&: 11/19 some attempts
+    // if (master.get_digital(DIGITAL_A)) {
+    //   claw.set(true); //closes claw
+    // } else if (master.get_digital(DIGITAL_B)) {
+    //   claw.set(false);
+    // }
+    //okay screw the if statement, include it as 
+    //claw.set(master.get_digital(DIGITAL_A), master.get_digital(DIGITAL_B)); //nope
+    //this one only "clamps" the claw as long as you hold 'A'
+    //claw.set(master.get_digital(DIGITAL_A)); //specifically activates claw as long as 'A' is held
+    // this makes it so that 'A' sets the claw one way, 'B' explicitly sets it the other way
+    // claw.buttons(master.get_digital(DIGITAL_A), master.get_digital(DIGITAL_B)); 
 
-    claw.button_toggle(master.get_digital(DIGITAL_A));
-    claw.button_toggle(master.get_digital(DIGITAL_B));
-  
+    // PT&&: so this button below works for toggling the klaw 11_20
+    claw.button_toggle(master.get_digital(DIGITAL_R1));
+    //claw.button_toggle(master.get_digital(DIGITAL_L2));
+    
+    
+    
+
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }
