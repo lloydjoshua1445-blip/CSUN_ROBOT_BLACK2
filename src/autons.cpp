@@ -212,7 +212,7 @@ void tug(int attempts) {
     // If failsafed...
     if (chassis.interfered) {
       chassis.drive_sensor_reset();
-      chassis.pid_drive_set(-2_in, 20);
+      chassis.pid_drive_set(6_in, 20);
       pros::delay(1000);
     }
     // If the robot successfully drove back, return
@@ -541,86 +541,148 @@ void test_autonomous() {
   // Peter Test 3 -- change the toggle to red
 
 
-  // === CSUN Sunrise Competition Auton === //
-  // hold the claw
-  // true sets to the opposite of the starting position
-  // starting position is always "open" so setting claw to true always closes it
-  claw.set(true); // PT&&:
-  pros::delay(1000);
+//   // === CSUN Sunrise Competition Auton === //
+//   // hold the claw
+//   // true sets to the opposite of the starting position
+//   // starting position is always "open" so setting claw to true always closes it
+//   claw.set(true); // PT&&:
+//   pros::delay(1000);
 
 
-  // chassis.pid_drive_set(-1_in, DRIVE_SPEED);
-  // chassis.pid_wait();
-
-  
-  //pros::delay(500);
-  // chassis.pid_wait_until(-1_in);
- // chassis.pid_wait();
-
-  lift.move(100);
-  // chassis.pid_wait_quick_chain();
-  pros::delay(1500);
-  lift.move(-80);
-
-  // you need your delays
-  pros::delay(2000);
-  lift.move(100);
-  pros::delay(1500);
-  // chassis.pid_wait_quick_chain();
-  lift.move(-80);
-  pros::delay(2000);
+//   // chassis.pid_drive_set(-1_in, DRIVE_SPEED);
+//   // chassis.pid_wait();
 
   
-  // officially the end of trying the toggle.
-  chassis.pid_wait();
+//   //pros::delay(500);
+//   // chassis.pid_wait_until(-1_in);
+//  // chassis.pid_wait();
 
-  // Peter Test 4 - move to center of the map
-  chassis.pid_drive_set(19_in, DRIVE_SPEED);
-  chassis.pid_wait();
+//   lift.move(100);
+//   // chassis.pid_wait_quick_chain();
+//   pros::delay(1500);
+//   lift.move(-80);
 
-  // just adjust the lift to go up
-  lift.move(100);
-  pros::delay(1500);
+//   // you need your delays
+//   pros::delay(2000);
+//   lift.move(100);
+//   pros::delay(1500);
+//   // chassis.pid_wait_quick_chain();
+//   lift.move(-80);
+//   pros::delay(2000);
 
-  // turn self right by 90 degrees to align self with the red goal
-  chassis.pid_turn_set(90_deg,TURN_SPEED);
-  chassis.pid_wait();
+  
+//   // officially the end of trying the toggle.
+//   chassis.pid_wait();
 
-  // go up to your team slot 
-  chassis.pid_drive_set(24_in, DRIVE_SPEED);
-  chassis.pid_wait();
-  pros::delay(1000);
+//   // Peter Test 4 - move to center of the map
+//   chassis.pid_drive_set(19_in, DRIVE_SPEED);
+//   chassis.pid_wait();
 
+//   // just adjust the lift to go up
+//   lift.move(100);
+//   pros::delay(1500);
 
-  // throw that thing down
-  lift.move(-80);
-  pros::delay(1500);
+//   // turn self right by 90 degrees to align self with the red goal
+//   chassis.pid_turn_set(90_deg,TURN_SPEED);
+//   chassis.pid_wait();
 
-  // let go of your claw
-  claw.set(false);
-  pros::delay(1000);
-
-   // go back a bit
-  chassis.pid_drive_set(-20_in, DRIVE_SPEED);
-  chassis.pid_wait();
-
-  //turn back to align self with the center
-  //chassis.pid_turn_set(-90_deg,TURN_SPEED); // might be absolte
-  chassis.pid_turn_set(0_deg,TURN_SPEED);
-  chassis.pid_wait();
-
-// drive 10 inches to approach the red/blue
-chassis.pid_drive_set(18_in, DRIVE_SPEED);
-chassis.pid_wait();
-
-// // close it around the red/blue, never knock that thang over, it has red on clear side
-// claw.set(true);
-// pros::delay(1000);
+//   // go up to your team slot 
+//   chassis.pid_drive_set(24_in, DRIVE_SPEED);
+//   chassis.pid_wait();
+//   pros::delay(1000);
 
 
-// === end of CSUN Sunrise Competition Auton === //
+//   // throw that thing down
+//   lift.move(-80);
+//   pros::delay(1500);
+
+//   // let go of your claw
+//   claw.set(false);
+//   pros::delay(1000);
+
+//    // go back a bit
+//   chassis.pid_drive_set(-20_in, DRIVE_SPEED);
+//   chassis.pid_wait();
+
+//   //turn back to align self with the center
+//   //chassis.pid_turn_set(-90_deg,TURN_SPEED); // might be absolte
+//   chassis.pid_turn_set(0_deg,TURN_SPEED);
+//   chassis.pid_wait();
+
+// // drive 10 inches to approach the red/blue
+// chassis.pid_drive_set(18_in, DRIVE_SPEED);
+// chassis.pid_wait();
+
+// // // close it around the red/blue, never knock that thang over, it has red on clear side
+// // claw.set(true);
+// // pros::delay(1000);
 
 
+// // === end of CSUN Sunrise Competition Auton === //
+
+
+  // == Peter Test 4: Testing EZ-Template Stuff == //
+  // wait_until_change_speed();
+  /**
+   * Notes on wait until change speed:
+   * it uses line chassis.pid_wait_until(6_in);
+   * it just tells the bot to keep performing its previous behavior until it crosses 6 inches
+   * once 6 inches elapses, moves onto its next behavior
+   * in this code, initially drive at speed 30, then after it moves 6 inches at 30 speed
+   * change to DRIVE_SPEED and travel its designated inches
+   */
+
+  // swing_example();
+  /**
+   * Swing example notes:
+   * swing doesn't work how you'd image
+   * the shape of a swing movement is very much like a paranthesis (
+   * it doesn't pivot on just one side. both wheels move initally
+   * but one side moves faster than the other, creating a slight curving motion
+   */
+
+  // motion_chaining();
+  /**
+   * Notes on motion_chaining:
+   * don't overthink the motion chaining, it just reduce latency before moving onto next movement
+   */
+
+
+
+  // combining_movements();
+  /**
+   * Notes on combining movements:
+   * it actually only slightly displaces the robot move than just driving forward
+   */
+  
+
+  // Continue from here
+  tug(6);
+  /**
+   * Notes on tug(6):
+   * so the robot goes back 5 times total. because i < attempts - 1
+   * It is stubborn, it'll keep trying to attempt those 5 backups
+   * but if there's something blocking its way, 
+   * then the robot switches over to the alternative route, this alternate
+   * route has robot move 6 inches forward, then reset its sensor, then it reattempts 
+   * to move 12 inches backwards
+   * okay no, it's much weirder
+   * 
+   * so, if you start the robot and load the program normally:
+   * the robot will try to move back once, and if its successful, then it'll stop right there, no loop
+   * 
+   * but, once the robot actually gets hindered for the first time:
+   * the robot will continue driving backwards another 4 times, those -12 inches
+   * but then,
+   * the robot will "remember" and for the rest of the run
+   * the robot will pull up its loop, move 6 inches forward, 12 inches back.
+   * and it'll do that 5 times every time you run the DOWN + B auton until you exit drive
+   * 
+   */
+
+  // interfered_example();
+
+  // odom_drive_example();
 
 
 
